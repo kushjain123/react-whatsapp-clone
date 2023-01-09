@@ -28,7 +28,7 @@ const SearchBox = styled.div`
 	padding: 10px;
 `;
 
-const SearchContainer = styled.div`
+export const SearchContainer = styled.div`
 	display: flex;
 	flex-direction: row;
 	background: white;
@@ -42,7 +42,7 @@ const SearchIcon = styled.img`
 	height: 28px;
 `
 
-const SearchInput = styled.input`
+export const SearchInput = styled.input`
 	width: 100%;
 	outline: none;
 	border: none;
