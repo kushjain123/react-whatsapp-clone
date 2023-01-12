@@ -39,9 +39,9 @@ function App() {
 	const [ selectedChat, setChat ] = useState();
 	return (
 		<Container>
-			<ContactListComponent/>
+			<ContactListComponent setChat={setChat}/>
 			{selectedChat ? 
-				<ConversationComponent/>
+				<ConversationComponent selectedChat={selectedChat}/>
 			:
 				<Placeholder>
 					<ChatPlaceholder src="/welcome-placeholder.jpeg" />

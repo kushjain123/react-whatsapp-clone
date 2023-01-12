@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { SearchContainer, SearchInput } from './ContactListComponent'
-import { messagesList } from '../mockData'
+import { SearchContainer, SearchInput } from './ContactListComponent';
+import { messagesList } from '../mockData';
+import Picker from "emoji-picker-react";
 
 const Container = styled.div`
 	display: flex;
@@ -63,12 +64,15 @@ const Message = styled.div`
 `
 
 
-const ConversationComponent = () => {
+const ConversationComponent = (props) => {
+	const { selectedChat } = props;
+	const [text,setText] = useState("");
+	const onEmojiClick = (event, emoji)=> {}
 	return (
 		<Container>
 			<ProfileHeader>
-				<ProfileImage src={'/profile/theindiandev.jpeg'} />
-				Kushagra Jain
+				<ProfileImage src={selectedChat.profilePic} />
+				{selectedChat.name}
 			</ProfileHeader>
 			<MessageContainer>
 				{messagesList.map((messageData)=>(
@@ -79,8 +83,12 @@ const ConversationComponent = () => {
 			</MessageContainer>
 			<ChatBox>
 				<SearchContainer>
+					<Picker 
+						pickerStyle={{ position: "absolute", bottom: "60px" }}
+						onEmojiClick={onEmojiClick} 
+					/>
 					<EmojiImage src={"/data.svg"}/>
-					<SearchInput placeholder='Type a message'/>
+					<SearchInput placeholder='Type a message' value={text} onChange={(event)=>{setText(event.target.value)}}/>
 				</SearchContainer>
 			</ChatBox>
 		</Container>
