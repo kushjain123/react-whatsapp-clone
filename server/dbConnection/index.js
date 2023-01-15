@@ -1,6 +1,10 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
+const dotenv = require("dotenv");
+dotenv.config({path:'./config.env'});
 
-const DB_CONNECTION_URL = "mongodb+srv://kush:7k3CovUqDZPBlMoP@cluster0.zhjgxut.mongodb.net/Cluster0?retryWrites=true&w=majority";
+const DB = process.env.DATABASE;
+
+const DB_CONNECTION_URL = DB;
 
 const connectDB = () => {
     const options = {

@@ -6,7 +6,10 @@ import applyRoutes from "./routes"
 const app = new APP();
 configureExpressApp(app);
 
-const PORT = 3001;
+const dotenv = require("dotenv");
+dotenv.config({path:'./config.env'});
+
+const PORT = process.env.PORT;
 
 const startServer = () => {
     console.log("DB trying to connect on " + new Date());
