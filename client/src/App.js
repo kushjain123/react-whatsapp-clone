@@ -35,11 +35,12 @@ const ChatPlaceholder = styled.img`
 `
 
 
-function App() {
+function App( props ) {
+	const { userInfo } = props;
 	const [ selectedChat, setChat ] = useState();
 	return (
 		<Container>
-			<ContactListComponent setChat={setChat}/>
+			<ContactListComponent setChat={setChat} imageUrl={userInfo.imageUrl}/>
 			{selectedChat ? 
 				<ConversationComponent selectedChat={selectedChat}/>
 			:

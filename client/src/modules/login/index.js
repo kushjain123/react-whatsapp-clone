@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { GoogleLogin } from "react-google-login";
 import App from "../../App";
 
 const Container = styled.div`
@@ -57,19 +58,8 @@ const QRCode = styled.img`
 const LoginComponent = () => {
   const [userInfo, setUserInfo] = useState();
 
-  useEffect(() => {
-    const userData = cookieManager.getUserInfo();
-    if (userData) setUserInfo(userData);
-  }, []);
-
-  const responseGoogle = async (response) => {
-    await httpManager.createUser({
-      email: response.profileObj.email,
-      name: response.profileObj.name,
-      profilePic: response.profileObj.imageUrl,
-    });
+  const handleResponseFromGoogle = (response) => {
     setUserInfo(response.profileObj);
-    cookieManager.setUserInfo(response.profileObj);
   };
 
   return (
@@ -90,14 +80,14 @@ const LoginComponent = () => {
                 </li>
               </ol>
               <GoogleLogin
-                clientId="412954107899-68euuaorrd8rvs138sa74g0fhudesc2f.apps.googleusercontent.com"
+                clientId="566521198958-ve9upu7r1m020ht2q9jb695gbpkqtmqs.apps.googleusercontent.com"
                 buttonText="Sign In with Google"
                 cookiePolicy={"single_host_origin"}
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onSuccess={handleResponseFromGoogle}
+                onFailure={handleResponseFromGoogle}
               />
             </Instructions>
-            <QRCode src="whatsapp-clone/qr-placeholder.png" />
+            <QRCode src="/qr-placeholder.png" />
           </CardView>
         </Container>
       )}
