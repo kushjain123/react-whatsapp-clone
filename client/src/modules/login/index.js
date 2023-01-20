@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { GoogleLogin } from "react-google-login";
+import { GoogleLogin } from '@react-oauth/google';
 import App from "../../App";
 
 const Container = styled.div`
@@ -59,6 +59,7 @@ const LoginComponent = () => {
   const [userInfo, setUserInfo] = useState();
 
   const handleResponseFromGoogle = (response) => {
+    console.log(response);
     setUserInfo(response.profileObj);
   };
 
@@ -80,7 +81,6 @@ const LoginComponent = () => {
                 </li>
               </ol>
               <GoogleLogin
-                clientId="566521198958-ve9upu7r1m020ht2q9jb695gbpkqtmqs.apps.googleusercontent.com"
                 buttonText="Sign In with Google"
                 cookiePolicy={"single_host_origin"}
                 onSuccess={handleResponseFromGoogle}
