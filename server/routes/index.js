@@ -6,8 +6,6 @@ const applyRoutes = (app) => {
 
     app.post('/user', Validation.validateCreateUser,  Controller.createUser);
 
-    app.post('/login', Validation.validateLogin,  Controller.loginUser);
-
     app.get('/search-user', Validation.validateSearchUser, Controller.searchUser);
 
     app.post('/channel', Validation.validateCreateChannel, Controller.createChannel);
@@ -15,6 +13,9 @@ const applyRoutes = (app) => {
     app.get('/channel-list', Validation.validateGetChannelList, Controller.getChannelList);
 
     app.post('/message', Validation.validateAddMessage, Controller.sendMessage);
+
+    // This route is not required because we are using Google Auth for validating the user
+    // app.post('/login', Validation.validateLogin,  Controller.loginUser);
 
 };
 export default applyRoutes;

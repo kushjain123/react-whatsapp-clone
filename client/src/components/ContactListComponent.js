@@ -121,7 +121,7 @@ const ContactListComponent = (props) => {
 				</SearchContainer>
 			</SearchBox>
 			{contactList.map((userData) => (
-				<ContactComponent userData={userData} setChat={props.setChat} />
+				<ContactComponent key={userData.id} userData={userData} setChat={props.setChat} />
 			))}
 		</Container>
 	)

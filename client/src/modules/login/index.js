@@ -4,6 +4,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import App from "../../App";
 import jwt_decode from "jwt-decode";
 import cookieManager from "../../managers/cookieManager";
+import httpManager from "../../managers/httpManager";
 
 const Container = styled.div`
   display: flex;
@@ -65,10 +66,19 @@ const LoginComponent = () => {
     if(userData) setUserInfo(userData)
   },[])
 
-  const handleResponseFromGoogle = (response) => {
+  const handleResponseFromGoogle = async (response) => {
     const decoded = jwt_decode(response.credential);
+    await httpManager.createUser({
+      profilePic: decoded.picture,
+      email: decoded.email,
+      name: decoded.name 
+    });
     setUserInfo({imageUrl:decoded.picture});
-    cookieManager.setUserInfo({imageUrl:decoded.picture})
+    cookieManager.setUserInfo({
+      imageUrl: decoded.picture,
+      email: decoded.email,
+      name: decoded.name
+    });
   };
 
   return (

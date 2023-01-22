@@ -5,19 +5,10 @@ module.exports = {
     validateCreateUser: async (req, res, next) => {
 		const schema = yup.object().shape({
 			name: yup.string().required(),
-			phoneNumber: yup.number().required(),
-			password: yup.string().required(),
+			email: yup.string().required(),
 			profilePic: yup.string(),
 		});
 		await validate(schema, req.body, res, next);
-    },
-	
-    validateLogin: async (req, res, next) => {
-		const schema = yup.object().shape({
-			phoneNumber: yup.string().required(),
-			password: yup.string().required(),
-		});
-      	await validate(schema, req.body, res, next);
     },
 
     validateCreateChannel: async (req, res, next) => {
@@ -26,9 +17,9 @@ module.exports = {
 			.array()
 			.of(
 				yup.object().shape({
-				_id: yup.string().required(),
-				name: yup.string().required(),
-				profilePic: yup.string(),
+					email: yup.string().required(),
+					name: yup.string().required(),
+					profilePic: yup.string(),
 				}),
 			).length(2)
 			.required(),
@@ -38,14 +29,14 @@ module.exports = {
 
     validateGetChannelList: async (req, res, next) => {
 		const schema = yup.object().shape({
-			userId: yup.string().required(),
+			email: yup.string().required(),
 		});
 		await validate(schema, req.query, res, next);
     },
   
     validateSearchUser: async (req, res, next) => {
 		const schema = yup.object().shape({
-			phone: yup.number().required(),
+			email: yup.string().required(),
 		});
 		await validate(schema, req.query, res, next);
     },
@@ -60,6 +51,15 @@ module.exports = {
 		});
 		await validate(schema, req.body, res, next);
   	}
+
+	// This validation is not required because we are using Google Auth for validating the user
+    // validateLogin: async (req, res, next) => {
+	// 	const schema = yup.object().shape({
+	// 		phoneNumber: yup.string().required(),
+	// 		password: yup.string().required(),
+	// 	});
+    //   	await validate(schema, req.body, res, next);
+    // }
 };
 
 const validate = async (schema, reqData, res, next) => {
