@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { GoogleLogin } from '@react-oauth/google';
 import App from "../../App";
+import jwt_decode from "jwt-decode";
+import cookieManager from "../../managers/cookieManager";
 
 const Container = styled.div`
   display: flex;
@@ -58,9 +60,15 @@ const QRCode = styled.img`
 const LoginComponent = () => {
   const [userInfo, setUserInfo] = useState();
 
+  useEffect(()=>{
+    const userData = cookieManager.getUserInfo();
+    if(userData) setUserInfo(userData)
+  },[])
+
   const handleResponseFromGoogle = (response) => {
-    console.log(response);
-    setUserInfo(response.profileObj);
+    const decoded = jwt_decode(response.credential);
+    setUserInfo({imageUrl:decoded.picture});
+    cookieManager.setUserInfo({imageUrl:decoded.picture})
   };
 
   return (
