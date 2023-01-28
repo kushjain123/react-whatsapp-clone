@@ -1,6 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import httpManager from '../managers/httpManager';
 import { contactList } from '../mockData'
+import utility from '../utility';
 
 const Container = styled.div`
 	display: flex;
@@ -109,6 +112,14 @@ const ContactComponent = (props) => {
 }
 const ContactListComponent = (props) => {
 	const {imageUrl} = props;
+	const [ searchString, setSearchString ] = useState("");
+
+	const onSearchTextChanged = async (searchText) => {
+		setSearchString(searchText);
+		if(!utility.validateEmail(searchText)) return;
+		const userData = await httpManager.searchUser(searchText);
+		console.log("===",userData);
+	}
 	return (
 		<Container>
 			<ProfileInfoDiv>
@@ -117,7 +128,7 @@ const ContactListComponent = (props) => {
 			<SearchBox>
 				<SearchContainer>
 					<SearchIcon src={"/search-icon.svg"}/>
-					<SearchInput placeholder='Search or start new chat'/>
+					<SearchInput placeholder='Search or start new chat' value={searchString} onChange={(e)=>onSearchTextChanged(e.target.value)} />
 				</SearchContainer>
 			</SearchBox>
 			{contactList.map((userData) => (

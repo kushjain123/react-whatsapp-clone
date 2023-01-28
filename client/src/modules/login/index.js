@@ -73,7 +73,9 @@ const LoginComponent = () => {
       email: decoded.email,
       name: decoded.name 
     });
-    setUserInfo({imageUrl:decoded.picture});
+    setUserInfo({imageUrl: decoded.picture,
+      email: decoded.email,
+      name: decoded.name});
     cookieManager.setUserInfo({
       imageUrl: decoded.picture,
       email: decoded.email,
