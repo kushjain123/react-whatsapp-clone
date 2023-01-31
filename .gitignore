@@ -7,7 +7,7 @@
 .idea
 */package-lock.json
 */yarn.lock
-*/config.env
+*/.env
 
 # testing
 /coverage
