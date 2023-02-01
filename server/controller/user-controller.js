@@ -11,6 +11,15 @@ export const addUser = async (request, response) => {
         await newUser.save();
         return response.status(200).json(newUser);
     } catch (error) {
-        return response.status(500).json(error);
+        return response.status(500).json(error.message);
+    }
+}
+
+export const getUsers = async (request, response) => {
+    try {
+        const users = await User.find({});
+        return response.status(200).json(users);
+    } catch (error) {
+        return response.status(500).json(error.message);
     }
 }
