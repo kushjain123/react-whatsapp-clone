@@ -32,7 +32,7 @@ const InputField = styled(InputBase)`
     font-size: 14px;
 `
 
-const Footer = () => {
+const Footer = ({ senderText }) => {
     
     const [ text, setText ] = useState('');
   return (
@@ -41,7 +41,8 @@ const Footer = () => {
         <ClipIcon />
         <Search>
             <InputField placeholder="Type a message"
-                onChange={(e)=>e.target.value}
+                onChange={(e)=>setText(e.target.value)}
+                onKeyPress={(e)=>senderText(e)}
             />
         </Search>
         <Mic />
