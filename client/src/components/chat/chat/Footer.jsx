@@ -1,6 +1,5 @@
 import { Box, styled, InputBase } from "@mui/material";
 import { Mic, AttachFile, EmojiEmotionsOutlined } from "@mui/icons-material";
-import { useState } from "react";
 
 const Container = styled(Box)`
     height: 55px;
@@ -32,17 +31,17 @@ const InputField = styled(InputBase)`
     font-size: 14px;
 `
 
-const Footer = ({ senderText }) => {
+const Footer = ({ senderText, setValue, value }) => {
     
-    const [ text, setText ] = useState('');
   return (
     <Container>
         <EmojiEmotionsOutlined />
         <ClipIcon />
         <Search>
             <InputField placeholder="Type a message"
-                onChange={(e)=>setText(e.target.value)}
+                onChange={(e)=>setValue(e.target.value)}
                 onKeyPress={(e)=>senderText(e)}
+                value={value}
             />
         </Search>
         <Mic />
