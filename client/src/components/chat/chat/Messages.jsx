@@ -16,11 +16,19 @@ const Component = styled(Box)`
     overflow-y: scroll;
 `
 
+const Container = styled(Box)`
+  padding: 1px 80px;
+`
+
 const Messages = ({ person, conversation }) => {
 
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState([]);
   const { account } = useContext(AccountContext);
+  const [newMessageFlag, setNewMessageFlag] = useState(false);   // new message typed and send this flag will change
+  const [file,setFile] = useState();
+  const [image,setImage] = useState('');
+
 
   useEffect(()=>{
     const getMessageDetails = async () => {
@@ -28,21 +36,35 @@ const Messages = ({ person, conversation }) => {
       setMessages(data);
     }
     conversation._id && getMessageDetails();
-  }, [person._id, conversation._id])
+  }, [person._id, conversation._id,newMessageFlag])
 
   const senderText = async (e)=> {
     const code = e.keycode || e.which;
     if(code===13) {
-      let message = {
-        senderId: account.sub,
-        receiverId: person.sub,
-        conversationId: conversation._id,
-        type: 'text',
-        text: value
+      let message = {};
+      if(!file) {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: 'text',
+          text: value
+        }
+      } else {
+        message = {
+          senderId: account.sub,
+          receiverId: person.sub,
+          conversationId: conversation._id,
+          type: 'file',
+          text: image
+        }
       }
 
       await newMessage(message);
       setValue('');
+      setFile('');
+      setImage('');
+      setNewMessageFlag(prev=>!prev);
     }
   }
   return (
@@ -50,7 +72,9 @@ const Messages = ({ person, conversation }) => {
         <Component>
           {
             messages && messages.map(message=>(
-              <Message message={message} />
+              <Container>
+                <Message message={message} />
+              </Container>
             ))
           }
 
@@ -59,6 +83,9 @@ const Messages = ({ person, conversation }) => {
           senderText={senderText}
           setValue={setValue}
           value={value}
+          file={file}
+          setFile={setFile}
+          setImage={setImage}
         />
     </Wrapper>
   )
