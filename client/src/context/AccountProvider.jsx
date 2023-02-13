@@ -9,6 +9,7 @@ const AccountProvider = ({children}) => {
     const [ account, setAccount ] = useState();
     const [ person, setPerson] = useState({});
     const [ activeUsers, setActiveUsers ] = useState([]);
+    const [newMessageFlag, setNewMessageFlag] = useState(false);   // new message typed and send this flag will change
 
     const socket = useRef();
 
@@ -24,7 +25,9 @@ const AccountProvider = ({children}) => {
             setPerson,
             socket,
             activeUsers,
-            setActiveUsers
+            setActiveUsers,
+            newMessageFlag,
+            setNewMessageFlag
         }}>
             {children}
         </AccountContext.Provider>
