@@ -1,7 +1,7 @@
 import { Box, styled } from "@mui/material";
 import Footer from "./Footer";
 import { AccountContext } from "../../../context/AccountProvider";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { getMessages, newMessage } from "../../../service/api";
 import Message from "./Message";
 
@@ -24,11 +24,21 @@ const Messages = ({ person, conversation }) => {
 
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState([]);
-  const { account } = useContext(AccountContext);
-  const [newMessageFlag, setNewMessageFlag] = useState(false);   // new message typed and send this flag will change
+  const { account, socket } = useContext(AccountContext);
   const [file,setFile] = useState();
   const [image,setImage] = useState('');
+  const scrollRef = useRef(); 
 
+  const [incomingMessage, setIncomingMessage,newMessageFlag,setNewMessageFlag] = useState(null);
+
+  useEffect(()=>{
+    socket.current.on('getMessage',data=>{
+      setIncomingMessage({
+        ...data,
+        createdAt: Date.now()
+      })
+    })
+  },[]);
 
   useEffect(()=>{
     const getMessageDetails = async () => {
@@ -37,6 +47,16 @@ const Messages = ({ person, conversation }) => {
     }
     conversation._id && getMessageDetails();
   }, [person._id, conversation._id,newMessageFlag])
+
+  useEffect(()=>{
+    scrollRef.current?.scrollIntoView({transition:'smooth'})
+  },[messages])
+
+  useEffect(() => {
+    incomingMessage && conversation?.members?.includes(incomingMessage.senderId) && 
+    setMessages((prev) => [...prev, incomingMessage]);
+    
+  }, [incomingMessage, conversation]);
 
   const senderText = async (e)=> {
     const code = e.keycode || e.which;
@@ -60,7 +80,10 @@ const Messages = ({ person, conversation }) => {
         }
       }
 
+      socket.current.emit('sendMessage', message);
+
       await newMessage(message);
+
       setValue('');
       setFile('');
       setImage('');
@@ -72,7 +95,7 @@ const Messages = ({ person, conversation }) => {
         <Component>
           {
             messages && messages.map(message=>(
-              <Container>
+              <Container ref={scrollRef}>
                 <Message message={message} />
               </Container>
             ))
