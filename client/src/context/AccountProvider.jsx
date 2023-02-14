@@ -1,28 +1,32 @@
-import { useEffect } from 'react';
-import { createContext, useState, useRef } from 'react';
-
+import { createContext, useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 
 export const AccountContext = createContext(null);
 
 const AccountProvider = ({children}) => {
+
     const [ account, setAccount ] = useState();
-    const [ person, setPerson] = useState({});
-    const [ activeUsers, setActiveUsers ] = useState([]);
-    const [newMessageFlag, setNewMessageFlag] = useState(false);   // new message typed and send this flag will change
+    const [showLoginButton, setShowLoginButton] = useState(true);
+    const [showLogoutButton, setShowLogoutButton] = useState(false);
+
+    const [activeUsers, setActiveUsers] = useState([]);
+    
+    const [newMessageFlag, setNewMessageFlag] = useState(false);
 
     const socket = useRef();
 
-    useEffect(()=>{
-        socket.current = io('ws://localhost:9000')
-    },[])
+    useEffect(() => {
+        socket.current = io('ws://localhost:9000');
+    }, [])
 
     return (
-        <AccountContext.Provider value={{
-            account,
-            setAccount,
-            person,
-            setPerson,
+        <AccountContext.Provider value={{ 
+            account, 
+            setAccount, 
+            showLoginButton,
+            setShowLoginButton,
+            showLogoutButton,
+            setShowLogoutButton,
             socket,
             activeUsers,
             setActiveUsers,
