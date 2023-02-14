@@ -1,8 +1,10 @@
 import { Box, Typography, styled  } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { AccountContext } from "../../../context/AccountProvider";
+import { UserContext } from "../../../context/UserProvider";
 import { setConversation, getConversation } from "../../../service/api";
 import { formatDate } from "../../../utils/common-utils";
+import { emptyProfilePicture } from "../../../constants/data";
 
 const Component = styled(Box)`
   display: flex;
@@ -34,11 +36,15 @@ const Timestamp = styled(Typography)`
 const Text = styled(Typography)`
   font-size: 14px;
   color:rgba(0,0,0,0.6);
-
+  display: block;
 `
 
 const Conversation = ({ user }) => {
-  const { setPerson, account, newMessageFlag } = useContext(AccountContext);
+
+  const url = user.picture || emptyProfilePicture;
+
+  const { setPerson } = useContext(UserContext);
+  const { account, newMessageFlag }  = useContext(AccountContext);
 
   const [message,setMessage] = useState({});
 
@@ -57,7 +63,7 @@ const Conversation = ({ user }) => {
   return (
     <Component onClick={()=>getUser()}>
       <Box>
-        <Image src={user.picture} alt="dp" />
+        <Image src={url} alt="display picture" />
       </Box>
       <Box style={{width:'100%'}}>
         <Container>

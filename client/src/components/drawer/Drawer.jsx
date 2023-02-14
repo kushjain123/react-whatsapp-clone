@@ -31,7 +31,7 @@ const drawerStyle = {
   boxShadow: 'none'
 };
 
-const InfoDrawer = ({ open, setOpen }) => {
+const InfoDrawer = ({ open, setOpen, profile }) => {
 
   const handleClose = () => {
     setOpen(false);
@@ -52,7 +52,7 @@ const InfoDrawer = ({ open, setOpen }) => {
 
       </Header>
       <Component>
-        <Profile />
+      {profile && <Profile />}
       </Component>
     </Drawer>
   )

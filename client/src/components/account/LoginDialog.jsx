@@ -22,52 +22,55 @@ const QRCode = styled('img')({
 
 const Title = styled(Typography)`
     font-size: 26px;
-    color: #525252;
-    font-weight: 300;
-    font-family: inherit;
     margin-bottom: 25px;
-`
+    color: #525252;
+    font-family: Segoe UI,Helvetica Neue,Helvetica,Lucida Grande,Arial,Ubuntu,Cantarell,Fira Sans,sans-serif;
+    font-weight: 300;
+`;
 
 const StyledList = styled(List)`
-    & > li {
-        padding: 0,
+    &  > li {
+        padding: 0;
         margin-top: 15px;
         font-size: 18px;
         line-height: 28px;
         color: #4a4a4a;
     }
-`
+`;
 
 const dialogStyle = {
-    height: '96%',
     marginTop: '12%',
+    height: '95%',
     width: '60%',
-    maxWidth: '100%',
+    maxWidth: '100',
     maxHeight: '100%',
+    borderRadius: 0,
     boxShadow: 'none',
     overflow: 'hidden'
 }
 
 const LoginDialog = () => {
 
-    const { setAccount } = useContext(AccountContext);
+    const { setAccount, showLoginButton, setShowLoginButton, setShowLogoutButton } = useContext(AccountContext);
 
     const onLoginSuccess = async (res) => {
-        const decoded = jwt_decode(res.credential);
+        let decoded = jwt_decode(res.credential);
         setAccount(decoded);
+        setShowLoginButton(false);
+        setShowLogoutButton(true);
         await addUser(decoded);
-    }
+    };
 
-    const onLoginError = (res) => {
-        console.log('Login Failed ',res);
-
-    }
+    const onLoginFailure = (res) => {
+        console.log('Login Failed:', res);
+    };
 
     return (
         <Dialog
             open={true}
-            PaperProps={{sx: dialogStyle}}
-            hideBackdrop={true}
+            BackdropProps={{style: {backgroundColor: 'unset'}}}
+            maxWidth={'md'}
+            PaperProps={{ sx: dialogStyle }}
         >
             <Component>
                 <Container>
@@ -78,18 +81,18 @@ const LoginDialog = () => {
                         <ListItem>3. Point your phone to this screen to capture the code</ListItem>
                     </StyledList>
                 </Container>
-                <Box style={{position: 'relative'}}>
-                    <QRCode src={qrCodeImage} alt="qr code"/>
-                    <Box style={{position: 'absolute', top: '50%', transform: 'translateX(25%)'}}>
-                        <GoogleLogin
-                            onSuccess={onLoginSuccess}
-                            onError={onLoginError}
-                        />
+                <Box style={{position:'relative'}}>
+                    <QRCode src={qrCodeImage} alt="QR Code" />
+                    <Box style={{position: 'absolute', top: '50%', transform: 'translateX(25%) translateY(-25%)'}}>
+                        { showLoginButton ?
+                            <GoogleLogin
+                                buttonText=""
+                                onSuccess={onLoginSuccess}
+                                onError={onLoginFailure}
+                            /> : null}
                     </Box>
                 </Box>
-
             </Component>
-
         </Dialog>
     )
 }

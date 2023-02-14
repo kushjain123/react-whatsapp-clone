@@ -24,14 +24,14 @@ const Conversations = ({ text }) => {
     useEffect(()=>{
         const fetchData = async () => {
             let response = await getUsers();
-            const filteredData = response.filter(user=>user.name.toLowerCase().includes(text.toLowerCase()));
+            let filteredData = response.filter(user=>user.name.toLowerCase().includes(text.toLowerCase()));
             setUsers(filteredData);
         }
         fetchData();
     },[ text ])
 
     useEffect(()=>{
-        socket.current.emit('addUsers',account);
+        socket.current.emit('addUser',account);
         socket.current.on('getUsers',users=>{
             setActiveUsers(users);
         });
@@ -41,11 +41,13 @@ const Conversations = ({ text }) => {
     return (
         <Component>
             {
-                users.map(user => (
+                users.map((user,index) => (
                     user.sub!== account.sub &&
                     <>
                         <Conversation user={user}/>
-                        <StyledDivider />
+                        {
+                            users.length !== (index + 1)  && <StyledDivider />
+                        }
                     </>
                 ))
             }

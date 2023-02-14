@@ -3,10 +3,12 @@ import { Box } from "@mui/material";
 import ChatHeader from "./ChatHeader";
 import Messages from "./Messages";
 import { AccountContext } from "../../../context/AccountProvider";
+import { UserContext } from "../../../context/UserProvider";
 import { getConversation } from "../../../service/api";
 
 const ChatBox = () => {
-  const { person, account } = useContext(AccountContext);
+  const { person } = useContext(UserContext);
+  const { account } = useContext(AccountContext);
 
   const [conversation, setConversation] = useState({});
 
@@ -18,6 +20,7 @@ const ChatBox = () => {
   getConversationDetails();
 
   },[person.sub]);
+  
   return (
     <Box style={{height: '75%'}}>
       <ChatHeader person={person} />

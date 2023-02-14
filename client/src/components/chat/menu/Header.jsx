@@ -3,7 +3,7 @@ import { AccountContext } from '../../../context/AccountProvider';
 import { Box, styled } from "@mui/material";
 import { Chat as MessageIcon } from '@mui/icons-material';
 import HeaderMenu from "./HeaderMenu";
-import InfoDrawer from "../../drawer/InfoDrawer";
+import InfoDrawer from '../../drawer/Drawer';
 
 const Component = styled(Box)`
     height: 44px;
@@ -47,13 +47,13 @@ const Header = () => {
     return (
         <>
             <Component>
-                <Image src={account.picture} alt='dp' onClick={()=>toggleDrawer()} />
+                <Image src={account.picture} alt='display picture' onClick={()=>toggleDrawer()} />
                 <Wrapper>
                     <MessageIcon />
-                    <HeaderMenu setOpenDrawer={setOpenDrawer} />
+                    <HeaderMenu/>
                 </Wrapper>
             </Component>
-            <InfoDrawer open={openDrawer} setOpen={setOpenDrawer} />
+            <InfoDrawer open={openDrawer} setOpen={setOpenDrawer} profile={true} />
         </>
     )
 }
