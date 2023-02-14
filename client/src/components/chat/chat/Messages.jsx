@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import Footer from "./Footer";
 import { AccountContext } from "../../../context/AccountProvider";
 import { useContext, useState, useEffect, useRef } from "react";
-import { getMessages, newMessage } from "../../../service/api";
+import { getMessages, newMessages } from "../../../service/api";
 import Message from "./Message";
 
 
@@ -82,7 +82,7 @@ const Messages = ({ person, conversation }) => {
 
       socket.current.emit('sendMessage', message);
 
-      await newMessage(message);
+      await newMessages(message);
 
       setValue('');
       setFile('');
